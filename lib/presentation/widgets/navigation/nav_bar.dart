@@ -1,80 +1,61 @@
 import 'package:flutter/material.dart';
 
-class ResponsiveNavBarPage extends StatelessWidget {
-  ResponsiveNavBarPage({super.key});
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+class ResponsiveNavBar extends StatelessWidget {
+  const ResponsiveNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final bool isLargeScreen = width > 800;
+    final bool isLargeScreen = width > 800;  // For larger screens, show full navbar
 
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        titleSpacing: 0,
-        leading: isLargeScreen
-            ? null
-            : IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-              ),
-        title: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "Logo",
-                style: TextStyle(
-                    color: Colors.green, fontWeight: FontWeight.bold),
-              ),
-              if (isLargeScreen) Expanded(child: _navBarItems())
-            ],
+    return Row(
+      children: [
+        if (!isLargeScreen) 
+          const _SideMenu(),
+        
+        if (isLargeScreen)
+          const Expanded(
+            child: _NavBarItems(),
           ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(child: _ProfileIcon()),
-          )
-        ],
-      ),
-      drawer: isLargeScreen ? null : _drawer(),
-      body: const Center(
-        child: Text(
-          "Body",
-        ),
+      ],
+    );
+  }
+}
+
+class _SideMenu extends StatelessWidget {
+  const _SideMenu();
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: const EdgeInsets.only(top: 20),
+        children: _menuItems
+            .map((item) => ListTile(
+                  onTap: () {},
+                  title: Text(item),
+                ))
+            .toList(),
       ),
     );
   }
+}
 
-  Widget _drawer() => Drawer(
-        child: ListView(
-          children: _menuItems
-              .map((item) => ListTile(
-                    onTap: () {
-                      _scaffoldKey.currentState?.openEndDrawer();
-                    },
-                    title: Text(item),
-                  ))
-              .toList(),
-        ),
-      );
+class _NavBarItems extends StatelessWidget {
+  const _NavBarItems();
 
-  Widget _navBarItems() => Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: _menuItems
             .map(
               (item) => InkWell(
                 onTap: () {},
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 24.0, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     item,
                     style: const TextStyle(fontSize: 18),
@@ -83,7 +64,9 @@ class ResponsiveNavBarPage extends StatelessWidget {
               ),
             )
             .toList(),
-      );
+      ),
+    );
+  }
 }
 
 final List<String> _menuItems = <String>[
@@ -92,31 +75,3 @@ final List<String> _menuItems = <String>[
   'Settings',
   'Sign Out',
 ];
-
-enum Menu { itemOne, itemTwo, itemThree }
-
-class _ProfileIcon extends StatelessWidget {
-  const _ProfileIcon();
-
-  @override
-  Widget build(BuildContext context) {
-    return PopupMenuButton<Menu>(
-        icon: const Icon(Icons.person),
-        offset: const Offset(0, 40),
-        onSelected: (Menu item) {},
-        itemBuilder: (BuildContext context) => <PopupMenuEntry<Menu>>[
-              const PopupMenuItem<Menu>(
-                value: Menu.itemOne,
-                child: Text('Account'),
-              ),
-              const PopupMenuItem<Menu>(
-                value: Menu.itemTwo,
-                child: Text('Settings'),
-              ),
-              const PopupMenuItem<Menu>(
-                value: Menu.itemThree,
-                child: Text('Sign Out'),
-              ),
-            ]);
-  }
-}

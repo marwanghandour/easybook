@@ -1,3 +1,4 @@
+import 'package:easybook/core/utils/app_routes.dart';
 import 'package:easybook/core/utils/app_styles.dart';
 import 'package:easybook/presentation/widgets/components/list_tile.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ class HomeViewWidgets extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      physics: const BouncingScrollPhysics(),
       slivers: [
         _buildCard(),
         _buildTextSection('Recommended'),
@@ -45,16 +47,32 @@ class HomeViewWidgets extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemCount: 10,
           itemBuilder: (context, index) {
-            return Container(
-              width: 150,
-              margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Image.asset('assets/images/bookex.png'),
-            );
+            return _buildRecommendedItem(context);
           },
         ),
+      ),
+    );
+  }
+
+  Widget _buildRecommendedItem(context) {
+    return InkWell(
+      onTap: () {
+        
+        Navigator.pushNamed(
+          context,
+         AppRoutes.productdetail
+         );
+      },
+      child: Container(
+        width: 150,
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Hero(
+          
+          tag: 'bookImage',
+          child: Image.asset('assets/images/bookex.png')),
       ),
     );
   }
@@ -65,7 +83,7 @@ class HomeViewWidgets extends StatelessWidget {
         (context, index) {
           return const SizedBox(
             height: 180,
-            child: CustomListTile()
+            child: CustomListTile(),
           );
         },
         childCount: 10,

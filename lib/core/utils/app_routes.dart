@@ -1,3 +1,4 @@
+import 'package:easybook/presentation/views/product_detail_view.dart';
 import 'package:easybook/presentation/views/utils/onboarding/on_boarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'navigation_helper.dart';
@@ -9,7 +10,7 @@ class AppRoutes {
   static const String main = '/';
   static const String splash = '/splash';
   static const String onboarding = '/onboarding';
-
+  static const String productdetail = '/productdetail';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -21,6 +22,10 @@ class AppRoutes {
 
       case onboarding:
         return NavigationHelper.createSlideRoute(const OnboardingScreen());
+
+        case productdetail:
+        return NavigationHelper.createSlideRoute(const ProductDetailView());
+
 
      
     

@@ -1,4 +1,5 @@
 import 'package:easybook/presentation/widgets/main_components/home_view_widget.dart';
+import 'package:easybook/presentation/widgets/navigation/nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/utils/app_icons.dart';
@@ -14,6 +15,7 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      drawer: const ResponsiveNavBar(),
        appBar: AppBar(
         title: const CustomSearchBar(),
          actions: [
